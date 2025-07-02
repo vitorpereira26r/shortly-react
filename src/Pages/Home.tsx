@@ -3,6 +3,12 @@ import Layout from "../Base/Layout";
 import { useData } from "../DataContext/DataContext";
 import { generateShortCode } from "../Utils/utils";
 
+// ✅ Função para garantir que toda URL comece com http:// ou https://
+function normalizeUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
 export default function Home() {
   const { tags, createLink } = useData();
   const [url, setUrl] = useState("");
@@ -14,7 +20,9 @@ export default function Home() {
     if (!url || !tagId) return;
 
     const code = generateShortCode();
-    createLink(url, Number(tagId), code);
+    const formattedUrl = normalizeUrl(url);
+
+    createLink(formattedUrl, Number(tagId), code);
     setShortCode(code);
     setUrl("");
     setTagId("");
@@ -28,14 +36,15 @@ export default function Home() {
           <div className="mb-3">
             <label className="form-label">URL original</label>
             <input
-              type="url"
+              type="text"
               className="form-control"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://exemplo.com"
+              placeholder="https://exemplo.com ou google.com"
               required
             />
           </div>
+
           <div className="mb-3">
             <label className="form-label">Tag</label>
             <select
@@ -52,6 +61,7 @@ export default function Home() {
               ))}
             </select>
           </div>
+
           <button type="submit" className="btn btn-primary">
             Encurtar
           </button>

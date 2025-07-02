@@ -36,9 +36,34 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
   // Inicializar a partir do localStorage
   useEffect(() => {
-    setTags(loadFromStorage("tags", []));
-    setLinks(loadFromStorage("links", []));
+    const storedTags = loadFromStorage<Tag[]>("tags", []);
+    const storedLinks = loadFromStorage<Link[]>("links", []);
+
+    // Verifica se já existe a tag Google
+    const existingGoogleTag = storedTags.find((tag) => tag.name === "Google");
+
+    const updatedTags = [...storedTags];
+    const updatedLinks = [...storedLinks];
+
+    if (!existingGoogleTag) {
+      const googleTag = { id: Date.now(), name: "Google" };
+      updatedTags.push(googleTag);
+
+      const googleLink: Link = {
+        id: Date.now() + 1,
+        original_url: "https://google.com/",
+        short_code: "google",
+        tag_id: googleTag.id,
+        clicks_count: 0,
+      };
+
+      updatedLinks.push(googleLink);
+    }
+
+    setTags(updatedTags);
+    setLinks(updatedLinks);
   }, []);
+  
 
   // Persistência automática
   useEffect(() => {

@@ -4,6 +4,7 @@ import Register from "./Pages/Register";
 import Home from "./Pages/Home";
 import Tags from "./Pages/Tags";
 import Links from "./Pages/Links";
+import RedirectLink from "./Redirect/RedirectLink";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/links" element={<Links />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/r/:short_code" element={<RedirectLink />} />
       </Routes>
     </BrowserRouter>
   );
