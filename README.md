@@ -1,69 +1,90 @@
-# React + TypeScript + Vite
+# Shortly – Encurtador de Links (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o Shortly, um encurtador de links simples e eficiente. O projeto foi desenvolvido com React + TypeScript usando o Vite para build e Bootstrap para estilização. Os dados são salvos em localStorage, simulando uma experiência real sem backend.
 
-Currently, two official plugins are available:
+## Sobre o Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Crie e gerencie links encurtados personalizados
+- Associe tags para organizar seus links
+- Tudo armazenado localmente com localStorage
+- Redirecionamento funcional através da rota /r/:short_code
 
-## Expanding the ESLint configuration
+## Como criar o projeto do zero
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Caso queira replicar do início:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Criar projeto com Vite + React + TypeScript
+npm create vite@latest shortly -- --template react-ts
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+# Entrar na pasta do projeto
+cd shortly
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Instalar as dependências
+npm install
+
+# Instalar React Router DOM
+npm install react-router-dom
+
+# Instalar Bootstrap
+npm install bootstrap
+
+# Rodar o projeto localmente
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Como rodar o projeto (caso já tenha clonado)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1. Clone o repositório
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/seu-usuario/shortly.git
+cd shortly
 ```
+
+Se você já tem o repositório clonado, atualize com:
+
+```bash
+git pull
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Execute o projeto
+
+```bash
+npm run dev
+```
+
+Acesse no navegador: http://localhost:5173
+
+## Estrutura do Projeto
+
+```
+shortly/
+├─ public/
+├─ src/
+│  ├─ pages/         # Telas principais (Home, Login, Register, Tags, Links, Redirect)
+│  ├─ components/    # Componentes reutilizáveis (ex: Layout)
+│  ├─ context/       # Context API com links e tags
+│  ├─ utils/         # Funções auxiliares (ex: normalizar URLs, gerar short codes)
+│  ├─ App.tsx        # Configuração das rotas
+│  └─ main.tsx       # Bootstrap do app
+├─ package.json
+├─ tsconfig.json
+└─ vite.config.ts
+```
+
+## Funcionalidades
+
+- Criação de links encurtados com short codes aleatórios
+- Redirecionamento automático via /r/:short_code
+- Normalização automática de URLs (ex: google.com → https://google.com)
+- Gerenciamento completo de tags (criar, editar, excluir)
+- Contador de cliques (mockado)
+- Persistência local com localStorage
+- Interface responsiva com Bootstrap 5
