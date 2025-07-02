@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
 
     if (username === "username" && password === "123456") {
-      setMessage("Bem-vindo, joaosilva123!");
+      setMessage("Bem-vindo, username!");
       navigate("/");
     } else {
       setMessage("Usuário ou senha inválidos.");
