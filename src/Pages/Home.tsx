@@ -1,18 +1,23 @@
 import { useState } from "react";
 import Layout from "../Base/Layout";
-import { mockTags } from "../Mock/Tags";
+import { useData } from "../DataContext/DataContext";
 import { generateShortCode } from "../Utils/utils";
 
 export default function Home() {
+  const { tags, createLink } = useData();
   const [url, setUrl] = useState("");
-  const [tag, setTag] = useState("");
+  const [tagId, setTagId] = useState("");
   const [shortCode, setShortCode] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url || !tag) return;
+    if (!url || !tagId) return;
+
     const code = generateShortCode();
+    createLink(url, Number(tagId), code);
     setShortCode(code);
+    setUrl("");
+    setTagId("");
   };
 
   return (
@@ -25,24 +30,24 @@ export default function Home() {
             <input
               type="url"
               className="form-control"
-              placeholder="https://exemplo.com"
-              required
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://exemplo.com"
+              required
             />
           </div>
           <div className="mb-3">
             <label className="form-label">Tag</label>
             <select
               className="form-select"
+              value={tagId}
+              onChange={(e) => setTagId(e.target.value)}
               required
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
             >
               <option value="">Selecione uma tag</option>
-              {mockTags.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
+              {tags.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
                 </option>
               ))}
             </select>

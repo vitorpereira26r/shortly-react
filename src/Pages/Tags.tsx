@@ -1,30 +1,17 @@
-import { useState } from "react";
 import Layout from "../Base/Layout";
-import { mockTags } from "../Mock/Tags";
+import { useData } from "../DataContext/DataContext";
+import { useState } from "react";
 
 export default function Tags() {
-  const [tags, setTags] = useState(mockTags);
-  const [newTag, setNewTag] = useState("");
+  const { tags, createTag, deleteTag, editTag } = useData();
+  const [newName, setNewName] = useState("");
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTag) return;
-    const newTagObj = {
-      id: Math.random(),
-      name: newTag,
-    };
-    setTags([...tags, newTagObj]);
-    setNewTag("");
-  };
-
-  const handleEdit = (id: number, newName: string) => {
-    setTags((prev) =>
-      prev.map((tag) => (tag.id === id ? { ...tag, name: newName } : tag))
-    );
-  };
-
-  const handleDelete = (id: number) => {
-    setTags((prev) => prev.filter((tag) => tag.id !== id));
+    if (newName) {
+      createTag(newName);
+      setNewName("");
+    }
   };
 
   return (
@@ -43,13 +30,13 @@ export default function Tags() {
                   type="text"
                   className="form-control"
                   placeholder="Digite o nome da nova tag"
-                  value={newTag}
-                  onChange={(e) => setNewTag(e.target.value)}
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
                   required
                 />
               </div>
               <div className="col-md-2 d-grid">
-                <button className="btn btn-success" type="submit">
+                <button type="submit" className="btn btn-success">
                   Criar Tag
                 </button>
               </div>
@@ -72,10 +59,9 @@ export default function Tags() {
                     const newName = new FormData(form).get(
                       "new_name"
                     ) as string;
-                    handleEdit(tag.id, newName);
+                    editTag(tag.id, newName);
                   }}
                 >
-                  <input type="hidden" name="tag_id" value={tag.id} />
                   <input
                     type="text"
                     name="new_name"
@@ -87,10 +73,9 @@ export default function Tags() {
                     Editar
                   </button>
                 </form>
-
                 <button
                   className="btn btn-danger btn-sm ms-2"
-                  onClick={() => handleDelete(tag.id)}
+                  onClick={() => deleteTag(tag.id)}
                 >
                   Excluir
                 </button>

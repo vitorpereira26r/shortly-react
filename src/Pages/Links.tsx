@@ -1,15 +1,11 @@
-import { useState } from "react";
 import Layout from "../Base/Layout";
-import { mockLinks } from "../Mock/Links";
+import { useData } from "../DataContext/DataContext";
 
 export default function Links() {
-  const [links, setLinks] = useState(mockLinks);
+  const { links, tags, deleteLink } = useData();
 
-  const handleDelete = (id: number) => {
-    if (confirm("Tem certeza que deseja excluir este link?")) {
-      setLinks((prev) => prev.filter((link) => link.id !== id));
-    }
-  };
+  const getTagName = (id: number) =>
+    tags.find((tag) => tag.id === id)?.name ?? "Sem tag";
 
   const baseUrl = window.location.origin + "/r";
 
@@ -32,7 +28,7 @@ export default function Links() {
                 <tr>
                   <th>URL Original</th>
                   <th>URL Encurtada</th>
-                  <th>Tags</th>
+                  <th>Tag</th>
                   <th>Cliques</th>
                   <th>Ações</th>
                 </tr>
@@ -45,23 +41,12 @@ export default function Links() {
                         href={link.original_url}
                         target="_blank"
                         rel="noreferrer"
-                        style={{
-                          maxWidth: "200px",
-                          display: "inline-block",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
                       >
                         {link.original_url}
                       </a>
                     </td>
                     <td>
-                      <a
-                        href={`/r/${link.short_code}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`/r/${link.short_code}`} target="_blank">
                         {baseUrl}/{link.short_code}
                       </a>
                       <button
@@ -76,17 +61,15 @@ export default function Links() {
                       </button>
                     </td>
                     <td>
-                      {link.tags.map((tag) => (
-                        <span key={tag} className="badge bg-primary me-1">
-                          {tag}
-                        </span>
-                      ))}
+                      <span className="badge bg-primary">
+                        {getTagName(link.tag_id)}
+                      </span>
                     </td>
                     <td>{link.clicks_count}</td>
                     <td>
                       <button
                         className="btn btn-danger btn-sm"
-                        onClick={() => handleDelete(link.id)}
+                        onClick={() => deleteLink(link.id)}
                       >
                         🗑 Excluir
                       </button>
